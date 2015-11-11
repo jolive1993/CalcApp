@@ -6,9 +6,9 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
 
-class DemoBox(BoxLayout):
+class MainLayout(BoxLayout):
     def __init__(self, **kwargs):
-        super(DemoBox, self).__init__(**kwargs)
+        super(MainLayout, self).__init__(**kwargs)
         self.orientation = "vertical"
         self.buckets = 0
         self.garbage = 0
@@ -92,12 +92,9 @@ class DemoBox(BoxLayout):
             self.tracker.text = str(float(self.buckets))
 
 
-    def on_property(self, obj, value):
-        print("Typical property change from", obj, "to", value)
-
-class DemoApp(App):
+class CalcApp(App):
     def build(self):
-        return DemoBox()
+        return MainLayout()
 
 if __name__ == "__main__":
-    DemoApp().run()
+    CalcApp().run()
