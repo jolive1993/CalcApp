@@ -21,14 +21,16 @@ class MainLayout(BoxLayout):
         self.num1 = 0
         self.num2 = 0
         self.funct = 0
+        self.deciPressed = 0
         self.tracker = Label(text=str(self.num1), font_size=50, halign='center')
         self.tracker.size_hint = (1, .1)
         self.add_widget(self.tracker)
+        clear = Button(text="Clear", font_size=24, background_color=(3,2,3,2))
+        clear.size_hint = (1, .1)
+        clear.bind(on_press = self.press)
         buttons = GridLayout(cols=4, spacing=5)
         self.add_widget(buttons)
-        #test = Button(text="Trash")
-        #buttons.add_widget(test)
-        #test.bind(on_press=self.change)
+        self.add_widget(clear)
         butts = []
         for i in range(10):
             butts.append(str(i))
@@ -37,11 +39,12 @@ class MainLayout(BoxLayout):
         butts.append("*")
         butts.append("/")
         butts.append("=")
-        butts.append("clear")
+        butts.append(".")
         for butt in butts:
             b = Button(text=str(butt))
             b.bind(on_press=self.press)
             b.background_color = (3,1,1,1)
+            b.font_size = (24)
             buttons.add_widget(b)
             
 
@@ -51,7 +54,8 @@ class MainLayout(BoxLayout):
             "=":self.equals,
             "*":self.multiplyer,
             "/":self.divider,
-            "clear":self.numclear
+            ".":self.decimal,
+            "Clear":self.numclear
         }
 
     def divider(self,obj):
@@ -59,16 +63,19 @@ class MainLayout(BoxLayout):
         self.num2 = self.num1
         self.num1 = 0
         self.funct = 4
+        self.deciPressed = 0
     def multiplyer(self,obj):
         self.num1 = int(self.num1)
         self.num2 = self.num1
         self.num1 = 0
         self.funct = 3
+        self.deciPressed = 0
     def equals(self,obj):
 
         try:
-            num1 = int(self.num1)
-            num2 = int(self.num2)
+            num1 = float(self.num1)
+            num2 = float(self.num2)
+            self.deciPressed = 1
             if self.funct == 1:
                 self.num1 = num1 +  num2
             elif self.funct == 2:
@@ -84,17 +91,20 @@ class MainLayout(BoxLayout):
 
   
     def adder(self, obj):
-        self.num1 = int(self.num1)
+        self.num1 = float(self.num1)
         self.num2 = self.num1
         self.num1 = 0
         self.funct = 1
+        self.deciPressed = 0
     def minuser(self,obj):
-        self.num1 = int(self.num1)
+        self.num1 = float(self.num1)
         self.num2 = self.num1
         self.num1 = 0
         self.funct = 2
+        self.deciPressed = 0
     def numclear(self, obj):
         self.num1 = 0
+        self.deciPressed = 0
     def press(self, obj):
         try:
             int(obj.text)
@@ -103,6 +113,12 @@ class MainLayout(BoxLayout):
         except ValueError:
             self.symbolFunctions[obj.text](obj)
             self.tracker.text = str(float(self.num1))
+    def decimal(self, obj):
+        if self.deciPressed == 0:
+            self.num1 = str(self.num1) + (".")
+            self.deciPressed = 1
+        else:
+            self.num1 = str(self.num1)
     def change(self, obj):
         root.current = 'Tit %d'
         
