@@ -5,6 +5,11 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.image import AsyncImage
+from kivy.uix.pagelayout import PageLayout
+from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition, FadeTransition
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.properties import NumericProperty
+
 
 
 class MainLayout(BoxLayout):
@@ -21,6 +26,9 @@ class MainLayout(BoxLayout):
         self.add_widget(self.tracker)
         buttons = GridLayout(cols=4, spacing=5)
         self.add_widget(buttons)
+        #test = Button(text="Trash")
+        #buttons.add_widget(test)
+        #test.bind(on_press=self.change)
         butts = []
         for i in range(10):
             butts.append(str(i))
@@ -33,7 +41,9 @@ class MainLayout(BoxLayout):
         for butt in butts:
             b = Button(text=str(butt))
             b.bind(on_press=self.press)
+            b.background_color = (3,1,1,1)
             buttons.add_widget(b)
+            
 
         self.symbolFunctions = {
             "+":self.adder,
@@ -93,11 +103,20 @@ class MainLayout(BoxLayout):
         except ValueError:
             self.symbolFunctions[obj.text](obj)
             self.tracker.text = str(float(self.num1))
+    def change(self, obj):
+        root.current = 'Tit %d'
+        
 
 
 class CalcApp(App):
     def build(self):
-        root = MainLayout()
+        root = ScreenManager(transition=FadeTransition())
+        screen = Screen(name='Title %d')
+        screen2 = Screen(name='Tit %d')
+        screen.add_widget(MainLayout())
+        screen2.add_widget(MainLayout())
+        root.add_widget(screen)
+        root.add_widget(screen2)
         return root
 
 if __name__ == "__main__":
