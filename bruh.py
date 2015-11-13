@@ -112,7 +112,6 @@ class MainLayout(BoxLayout):
             self.deciPressed = 1
         else:
             self.num1 = str(self.num1)
-
 class Notes(BoxLayout):
     def __init__(self, **kwargs):
         super(Notes, self).__init__(**kwargs)
@@ -130,6 +129,5 @@ class CalcApp(App):
         root.add_widget(MainLayout())
         root.add_widget(Notes())
         return root
-
 if __name__ == "__main__":
     CalcApp().run()
