@@ -4,20 +4,15 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.uix.image import AsyncImage
-from kivy.uix.pagelayout import PageLayout
-from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition, FadeTransition
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.properties import NumericProperty
-
+from kivy.uix.carousel import Carousel
 
 
 class MainLayout(BoxLayout):
     def __init__(self, **kwargs):
         super(MainLayout, self).__init__(**kwargs)
         self.orientation = "vertical"
-        self.spacing = 5
-        self.padding = 5
+        self.spacing = 10
+        self.padding = 10
         self.num1 = 0
         self.num2 = 0
         self.funct = 0
@@ -28,7 +23,7 @@ class MainLayout(BoxLayout):
         clear = Button(text="Clear", font_size=24, background_color=(3,2,3,2))
         clear.size_hint = (1, .1)
         clear.bind(on_press = self.press)
-        buttons = GridLayout(cols=4, spacing=5)
+        buttons = GridLayout(cols=4, spacing=10)
         self.add_widget(buttons)
         self.add_widget(clear)
         butts = []
@@ -47,7 +42,6 @@ class MainLayout(BoxLayout):
             b.font_size = (24)
             buttons.add_widget(b)
             
-
         self.symbolFunctions = {
             "+":self.adder,
             "-":self.minuser,
@@ -57,15 +51,14 @@ class MainLayout(BoxLayout):
             ".":self.decimal,
             "Clear":self.numclear
         }
-
     def divider(self,obj):
-        self.num1 = int(self.num1)
+        self.num1 = float(self.num1)
         self.num2 = self.num1
         self.num1 = 0
         self.funct = 4
         self.deciPressed = 0
     def multiplyer(self,obj):
-        self.num1 = int(self.num1)
+        self.num1 = float(self.num1)
         self.num2 = self.num1
         self.num1 = 0
         self.funct = 3
@@ -119,20 +112,23 @@ class MainLayout(BoxLayout):
             self.deciPressed = 1
         else:
             self.num1 = str(self.num1)
-    def change(self, obj):
-        root.current = 'Tit %d'
-        
 
-
+class Notes(BoxLayout):
+    def __init__(self, **kwargs):
+        super(Notes, self).__init__(**kwargs)
+        self.orientation = "vertical"
+        self.spacing = 10
+        self.padding = 10
+        self.title = Label(text="Notes", font_size=50, halign='center')
+        self.title.size_hint = (1, .1)
+        self.textField = TextInput(font_size=24)
+        self.add_widget(self.title)
+        self.add_widget(self.textField)
 class CalcApp(App):
     def build(self):
-        root = ScreenManager(transition=FadeTransition())
-        screen = Screen(name='Title %d')
-        screen2 = Screen(name='Tit %d')
-        screen.add_widget(MainLayout())
-        screen2.add_widget(MainLayout())
-        root.add_widget(screen)
-        root.add_widget(screen2)
+        root = Carousel(direction='right')
+        root.add_widget(MainLayout())
+        root.add_widget(Notes())
         return root
 
 if __name__ == "__main__":
