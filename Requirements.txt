@@ -1,0 +1,1 @@
+Requires kivy library to run .py file. Arm7 android emuluator or phone to run apk.
